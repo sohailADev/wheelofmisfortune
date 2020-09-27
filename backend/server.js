@@ -22,12 +22,15 @@ connection.once('open', () => {
 const teamMemberRouter = require('./routes/teamMembers');
 const dailyStandupRouter = require('./routes/dailyStandups');
 
-app.use(cors({origin: 'http://localhost:3000'}));
+app.use(cors({origin: '*'}));
 app.use(express.json());
 app.use('/teamMembers', teamMemberRouter);
 app.use('/dailyStandups', dailyStandupRouter);
 
-
+if (process.env.NODE_ENV === 'production')
+{
+    app.use(express.static('../client/build'));
+}
 
 app.listen(port, () => {
     console.log("Listening on port:" + port);
